@@ -10,22 +10,22 @@ def cargar_matriz_notas():
     cant_Examenes = 0 #harcodeo un 2 para probar, pero la variable iniciaria en 0
 
     while cant_Alumnos <= 0: #al no haber alumnos cargados, entro al bucle
-        entrada = input("Ingrese la cantidad de alumnos: ")
-        if entrada.isdigit():
+        entrada = input("Ingrese la cantidad de alumnos: ") #se pide al usuario los alumnos
+        if entrada.isdigit(): #verifico si se ingresa un numero entero
             cant_Alumnos = int(entrada) #convierto el str en un int 
             if cant_Alumnos <= 0:
-                print("Debe ser mayor que cero.") #si carga un negativo o 0, tira error
+                print("Error. La cantidad debe ser mayor que cero.") #si carga un negativo o 0, tira error
         else:
-            print("Debe ingresar un número entero.") #si carga algo que no sea un numero, tira error
+            print("Error. Debe ingresar un número entero.") #si carga algo que no sea un numero, tira error
 
     while cant_Examenes <= 0: #al no haber alumnos cargados, entro al bucle
-        entrada = input("Ingrese la cantidad de exámenes: ")
-        if entrada.isdigit():
+        entrada = input("Ingrese la cantidad de exámenes: ")#se pide al usuario los alumnos
+        if entrada.isdigit(): #verifico si se ingresa un numero entero
             cant_Examenes = int(entrada) #convierto el str en un int 
             if cant_Examenes <= 0:
-                print("Debe ser mayor que cero.") #si carga un negativo o 0, tira error
+                print("Error. La cantidad debe ser mayor que cero.") #si carga un negativo o 0, tira error
         else:
-            print("Debe ingresar un número entero.") #al no haber alumnos cargados, entro al bucle
+            print("Error. Debe ingresar un número entero.") #al no haber alumnos cargados, entro al bucle
 
     matriz_de_Alumnos = [] #matriz vacia
     for i in range(cant_Alumnos): #defino las filas con el numero de alumnos
@@ -60,16 +60,18 @@ def porcentaje_aprobados(matriz_notas):
         contador_examenes_aprobados = 0 #inicio un acumulador para el alumno
         total_examenes = len(matriz_notas[i]) #total de examanes indicados por la cant de columnas de la matriz 
         
-        for j in range(total_examenes): #recorro cada nota del alumno
-            if matriz_notas[i][j] >= 6:
+        for j in range(total_examenes): #recorro cada columna (examenes del alumno)
+            if matriz_notas[i][j] >= 6: #verifico si el la nota de ese alumno, en ese examen es igual o mayor a 6
                 contador_examenes_aprobados += 1 #si la nota es mayor o igual a 6, se aumenta al contador para promediarlo
         
-        # Calcula el porcentaje de exámenes aprobados
-        porcentaje = (contador_examenes_aprobados * 100) / total_examenes
+        # Calcula el porcentaje de exámenes aprobados del alumno
+        porcentaje = (contador_examenes_aprobados * 100) / total_examenes 
 
+        "\n"
         # Muestra el resultado para este alumno
         print(f"El Alumno {i+1} Aprobó {contador_examenes_aprobados} de {total_examenes} exámenes. "
-              f"Su porcentaje de aprobación es: {porcentaje:.2f}%")
+              f"Su porcentaje de aprobación es: {porcentaje:.2f}%") #agrego el .2f para mostrar unicamente 2 decimales
 
 
-porcentaje_aprobados(cargar_matriz_notas())
+#llamo a la funcion para ver los aprobados y le cargo como parametro la matriz que devuelve la funcion de carga
+porcentaje_aprobados(cargar_matriz_notas()) 
