@@ -67,11 +67,66 @@ def porcentaje_aprobados(matriz_notas):
         # Calcula el porcentaje de exámenes aprobados del alumno
         porcentaje = (contador_examenes_aprobados * 100) / total_examenes 
 
-        "\n"
+        
         # Muestra el resultado para este alumno
         print(f"El Alumno {i+1} Aprobó {contador_examenes_aprobados} de {total_examenes} exámenes. "
               f"Su porcentaje de aprobación es: {porcentaje:.2f}%") #agrego el .2f para mostrar unicamente 2 decimales
 
 
 #llamo a la funcion para ver los aprobados y le cargo como parametro la matriz que devuelve la funcion de carga
-porcentaje_aprobados(cargar_matriz_notas()) 
+#porcentaje_aprobados(cargar_matriz_notas()) 
+
+
+def mejor_promedio(matriz_notas):
+    """Recibe la matriz de alumnos, declara variables que va a usar para guardar al alumno y su correspondiente promedio
+    Recorre los examenes que tuvo alumno por alumno y luego va acumulando esas notas, divide la suma por la cantidad de columnas (examenes)
+    que recorrió, y luego compara ese resultado con el mejor promedio encontrado hasta el momento (primera vez vacio)
+    Si es mayor, guarda el indice de alumno y el total de su promedio en las variables declaradas al principio.
+    Al terminar muestra el ultimo mejor promedio encontrado y el indice del alumno al que pertenece"""
+    mejor_promedio = 0
+    alumno_mejor_promedio = 0
+
+    for i in range(len(matriz_notas)):  # Recorremos fila por fila (alumnos)
+        suma_de_notas = 0 #inicio el acumulador
+        for j in range(len(matriz_notas[i])):  #sumamos todas las notas del alumno i
+            suma_de_notas += matriz_notas[i][j] #sumo la nota correspondiente al alumno i en el examen j
+        promedio_alumno = suma_de_notas / len(matriz_notas[i]) #divido entre el largo de columnas (examenes)
+
+        if promedio_alumno > mejor_promedio: #comparo el mejor promedio, entra si en esta iteración el promedio del primer recorrido es mayor al guardado
+            mejor_promedio = promedio_alumno #reemplazo el valor del nuevo mejor promedio con el encontrado
+            alumno_mejor_promedio = i + 1 #guardo el indice del alumno que tenga el mejor promedio, sumo +1 ára que sea correcto al imprimir
+    
+    print(f"el alumno {alumno_mejor_promedio} tuvo el mejor promedio y fue: {mejor_promedio}")
+
+
+def buscar_nota(matriz_notas):
+    """Busca una nota específca en la matriz de los alumnos.
+        Pide al usuario que nota quiere buscar, validando que sea numero y que este entre 1 y 10 inclusive.
+        Recorre las notas y si encuentra una coincidencia guarda el alumno y en que examen saco la nota en una lista auxiliar.
+        Recorre la lista auxiliar que se formó y muestra al/los alumnos y en que examen se sacaron la nota a buscar
+        Si no hay coincidencias indica que no se encontró la nota a buscar"""
+    posicion_nota_encontrada = []  # Lista para guardar la posicion del alumno
+    
+    while True: #creo un bucle para preguntar y encontrar una nota a buscar valida
+        nota_buscada = input("Ingrese la nota que desea buscar (1-10): ")
+        if nota_buscada.isdigit(): # verifico si se ingresa un numero entero
+            nota_buscada = int(nota_buscada) #convierto el str en un int 
+            if 1 <= nota_buscada <= 10: #si entra, valido que la nota a buscar este entre 1 inclusive y 10 inclusive 
+                break
+            else:
+                print("La nota debe estar entre 1 y 10.") #si es menor que 1 o mayor que 10 indico el error
+            
+        else:
+            print("Error. Debe ingresar un número entero.") # si carga algo que no sea un numero, tira error
+
+    for i in range(len(matriz_notas)): #recorro los alumnos
+        for j in range(len(matriz_notas[i])): #recorro los examenes
+            if matriz_notas[i][j] == nota_buscada: #si en numero de examen del alumno se encuentra la nota a buscar, entro
+                posicion_nota_encontrada.append([i, j])  # Guardamos en la lista la fila (alumno) y la columna (examen)
+
+    if len(posicion_nota_encontrada) == 0: #si la lista creada no tiene indices (alumnos cargados), significa que no encontro coincidencias
+        print(f"No se encontró la nota {nota_buscada} entre los examenes de los alumnos.")
+    else:
+        print(f"La nota {nota_buscada} se encontró en los siguientes examenes:") #muestro de nuevo la nota ingresada por el usuario
+        for posicion_alumno in posicion_nota_encontrada: #recorro la lista de los alumnos y notas encontradas
+            print(f"En el Examen {posicion_alumno[1]+1} del Alumno {posicion_alumno[0]+1}") #muestro los alumnos y sus notas encontradas
